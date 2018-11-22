@@ -27,8 +27,9 @@ if __name__ == '__main__':
     opt['filters'] = ([], "   --update-readme  auto update/add tree to README.md")
     opt['start-line'] = ("# 目录结构", "   --start_line='str'  the first line that replace in readme")
     opt['end-line'] = ("---", "   --end_line='str'  the end line that replace in readme")
+    opt['comment-match'] = ("// comment: ", "   --end_line='// comment: '  line in file whose prefix string is this will match")
+    opt['max-line-len'] = (120, "   --max-line-len=120  the max line nums in readme.md")
     conf_file_opt = opt
-    print(conf_file_opt)
     target_dir = get_option(sys.argv[1:], opt)
 
     # check project root is dir or not
@@ -51,18 +52,19 @@ if __name__ == '__main__':
 
     # load configure
     config = configparser.ConfigParser(allow_no_value=True)
-    config.read(conf_file_abs)
+    config.optionxform = str
+    config.read(conf_file_abs,encoding="utf-8")
 
     # add configure into default options
     file_filters = []
-    for i in config['filters']:
+    for i in config['ignore-files']:
         file_filters.append(i)
     conf_file_opt["filters"] = file_filters
     for i in config['common']:
         for key_tuple in conf_file_opt.keys():
             if i in key_tuple:
                 conf_file_opt[key_tuple] = config['common'][i]
-                continue
+                break
 
     # conf option cover with user input option
     for opt_name in opt.get_input_option():
@@ -72,6 +74,8 @@ if __name__ == '__main__':
     tree.file_filter = conf_file_opt["filters"]
     tree.start_line = conf_file_opt["start-line"]
     tree.end_line = conf_file_opt["end-line"]
+    tree.comment_match_key = conf_file_opt["comment-match"]
+    tree.max_line_len = conf_file_opt["max-line-len"]
     tree.print_tree()
 
 

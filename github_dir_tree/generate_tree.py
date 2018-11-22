@@ -33,6 +33,7 @@ class Tree:
         self._tmp_file = os.path.join(tempfile.gettempdir(), ".github_dir_tree_tmp")
         self.start_line = "# 目录结构"
         self.end_line = "---"
+        self.max_line_len = 120
 
     @property
     def root_path(self):
@@ -134,7 +135,7 @@ class Tree:
             else:
                 print("* " + self.get_md_file_link(file_node), end="", file=fs)
 
-            max_line_words = 80 - len(need_line) * 5 - file_node.basename_len()
+            max_line_words = 100 - len(need_line) * 5 - file_node.basename_len()
             first_line = True
             if len(file_node.comments) and not file_node.is_dir:
                 comments = file_node.comments.copy()

@@ -1,10 +1,13 @@
 [ignore-files]
+.git
 .gitignore
 .github_dir_tree
 
 [common]
 level = 0
-generate_comment = True
-update_readme = False
-start_line = "# 目录结构"
-end_line = "---"
+generate-comment = True
+update-readme = False
+start-line = # 目录结构
+end-line = ---
+comment-match = // comment:
+max-line-len = 120
