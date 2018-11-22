@@ -1,0 +1,10 @@
+[ignore-files]
+.gitignore
+.github_dir_tree
+
+[common]
+level = 0
+generate_comment = True
+update_readme = False
+start_line = "# 目录结构"
+end_line = "---"
