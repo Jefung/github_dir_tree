@@ -127,16 +127,15 @@ class Tree:
                     need_line.remove(file_node.level)
             for i in range(0, file_node.level):
                 if i in need_line:
-                    print("│", end="", file=fs)
+                    print(" ", end="", file=fs)
                 print('   ', end="", file=fs)
             if file_node.is_end:
-                print("└─" + self.get_md_file_link(file_node), end="", file=fs)
+                print("* " + self.get_md_file_link(file_node), end="", file=fs)
             else:
-                print("├─" + self.get_md_file_link(file_node), end="", file=fs)
+                print("* " + self.get_md_file_link(file_node), end="", file=fs)
 
             max_line_words = 80 - len(need_line) * 5 - file_node.basename_len()
             first_line = True
-            # print(len(file_node.comments))
             if len(file_node.comments) and not file_node.is_dir:
                 comments = file_node.comments.copy()
                 while len(comments):
@@ -147,7 +146,7 @@ class Tree:
                         line_content = comments[0]
                         del comments[0]
                     if first_line:
-                        print(" :" + line_content, file=fs)
+                        print("&nbsp;:&nbsp;" + line_content + "<br/>", file=fs)
                         first_line = False
                     else:
                         if file_node.is_end:
@@ -156,17 +155,19 @@ class Tree:
                                     print(" ", end="", file=fs)
                                 print('   ', end="", file=fs)
                             for i in range(0, file_node.basename_len() + 1):
-                                print(' ', end="", file=fs)
+                                print('&nbsp;', end="", file=fs)
+                            print("&nbsp;&nbsp;", end="", file=fs)
                             print(line_content)
                         else:
                             for i in range(0, file_node.level + 1):
                                 if i in need_line:
-                                    print("│", end="", file=fs)
+                                    print(" ", end="", file=fs)
                                 if i != file_node.level:
                                     print('   ', end="", file=fs)
                             for i in range(0, file_node.basename_len() + 3):
-                                print(" ", end="", file=fs)
-                            print(line_content, file=fs)
+                                print("&nbsp;", end="", file=fs)
+                            print("&nbsp;&nbsp;", end="", file=fs)
+                            print(line_content + "<br/>", file=fs)
             else:
                 print("", file=fs)
 
@@ -181,7 +182,7 @@ class Tree:
             source_file = f.read()
 
         with open(target_update_file, 'r',encoding="utf-8") as f:
-            target_file = f.read()  # read file into file2
+            target_file = f.read()  
 
         target_start = 0
         target_end = 0
