@@ -29,6 +29,7 @@ if __name__ == '__main__':
     opt['end-line'] = ("---", "   --end_line='str'  the end line that replace in readme")
     opt['comment-match'] = ("// comment: ", "   --end_line='// comment: '  line in file whose prefix string is this will match")
     opt['max-line-len'] = (120, "   --max-line-len=120  the max line nums in readme.md")
+    opt['dir-description'] = (".dir_desc", "   --max-line-len=120  the max line nums in readme.md")
     conf_file_opt = opt
     target_dir = get_option(sys.argv[1:], opt)
 
@@ -76,7 +77,10 @@ if __name__ == '__main__':
     tree.end_line = conf_file_opt["end-line"]
     tree.comment_match_key = conf_file_opt["comment-match"]
     tree.max_line_len = conf_file_opt["max-line-len"]
+    tree.dir_desc = conf_file_opt["dir-description"]
+    # print()
     tree.print_tree()
+    # todo : use regex to match comment
 
 
 

@@ -34,6 +34,7 @@ class Tree:
         self.start_line = "# 目录结构"
         self.end_line = "---"
         self.max_line_len = 120
+        self.dir_desc = ".dir_desc"
 
     @property
     def root_path(self):
@@ -58,7 +59,7 @@ class Tree:
                 handled_filters.append(os.path.join(self._root_path, f[1:]))
             else:
                 handled_filters.append(os.path.join(self._root_path, "**/" + f))
-
+        handled_filters.append(os.path.join(self._root_path, "**/" + self.dir_desc))
         ignore_files = []
         for match_path in handled_filters:
             ignore_files.extend(glob.glob(match_path, recursive=True))
@@ -71,10 +72,8 @@ class Tree:
         if len(file_list) == 0:
             return []
         # only_files = (file for file in file_list if os.path.isfile(os.path.join(path, file)))
-        print(file_list)
         file_list = [file for file in file_list if
                      os.path.normpath(os.path.abspath(os.path.join(dir_path, file))) not in self._file_filter]
-        print(file_list)
         only_dir = True
         final_file = ""
         for f in file_list:
@@ -96,6 +95,13 @@ class Tree:
                 node.abs_path = abs_path
                 node.is_dir = True
                 dirs.append(node)
+
+                dir_desc_file = os.path.join(os.path.join(dir_path, f), self.dir_desc)
+                if os.path.exists(dir_desc_file) and os.path.isfile(dir_desc_file):
+                    with open(dir_desc_file.encode("utf-8"), encoding="utf8", errors="ignore") as f_content:
+                        for line in f_content:
+                            line = line[0:-1] if line[-1] == '\n' else line
+                            node.comments.append(line)
                 if only_dir and final_file == node.abs_path:
                     node.is_end = True
                 dirs += self.list_dir(os.path.join(dir_path, f), level + 1)
@@ -116,7 +122,7 @@ class Tree:
         return dirs + files
 
     def print_tree(self):
-        fs = open(self._tmp_file, "w+",encoding="utf-8")
+        fs = open(self._tmp_file, "w+", encoding="utf-8")
         files_list = self.list_dir(self._root_path)
         need_line = []
         for file_node in files_list:
@@ -137,7 +143,7 @@ class Tree:
 
             max_line_words = 100 - len(need_line) * 5 - file_node.basename_len()
             first_line = True
-            if len(file_node.comments) and not file_node.is_dir:
+            if len(file_node.comments):
                 comments = file_node.comments.copy()
                 while len(comments):
                     if len(comments[0]) > max_line_words:
@@ -177,13 +183,13 @@ class Tree:
         target_update_file = os.path.join(self._root_path, "README.md")
         if not os.path.exists(target_update_file) \
                 or os.path.isdir(target_update_file):
-            open('README.md', 'a',encoding="utf-8").close()
+            open('README.md', 'a', encoding="utf-8").close()
 
-        with open(self._tmp_file, 'r',encoding="utf-8") as f:
+        with open(self._tmp_file, 'r', encoding="utf-8") as f:
             source_file = f.read()
 
-        with open(target_update_file, 'r',encoding="utf-8") as f:
-            target_file = f.read()  
+        with open(target_update_file, 'r', encoding="utf-8") as f:
+            target_file = f.read()
 
         target_start = 0
         target_end = 0
@@ -194,14 +200,14 @@ class Tree:
         except Exception as e:
             target_end = target_start = 0
 
-        source_file = "{}\n\n{}\n{}".format(self.start_line,source_file,self.end_line)
+        source_file = "{}\n\n{}\n{}".format(self.start_line, source_file, self.end_line)
 
         if target_end == 0 and target_start == 0:
             target_file += '\n' + source_file
         else:
-            target_file = target_file.replace(target_file[target_start:target_end],source_file)
+            target_file = target_file.replace(target_file[target_start:target_end], source_file)
         print(target_file)
-        with open(target_update_file, 'w',encoding="utf-8") as f:
+        with open(target_update_file, 'w', encoding="utf-8") as f:
             f.write(target_file)
 
     def get_md_file_link(self, node: Node):
