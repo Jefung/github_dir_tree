@@ -35,6 +35,7 @@ class Tree:
         self.end_line = "---"
         self.max_line_len = 120
         self.dir_desc = ".dir_desc"
+        self.level = 0
 
     @property
     def root_path(self):
@@ -126,6 +127,8 @@ class Tree:
         files_list = self.list_dir(self._root_path)
         need_line = []
         for file_node in files_list:
+            if int(self.level) != 0 and file_node.level > int(self.level):
+                continue
             if not file_node.is_end:
                 if file_node.level not in need_line:
                     need_line.append(file_node.level)

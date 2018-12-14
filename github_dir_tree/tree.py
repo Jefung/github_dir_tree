@@ -78,6 +78,7 @@ if __name__ == '__main__':
     tree.comment_match_key = conf_file_opt["comment-match"]
     tree.max_line_len = conf_file_opt["max-line-len"]
     tree.dir_desc = conf_file_opt["dir-description"]
+    tree.level = conf_file_opt["level"]
     # print()
     tree.print_tree()
     # todo : use regex to match comment
