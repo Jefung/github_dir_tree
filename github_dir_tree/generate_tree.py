@@ -214,4 +214,4 @@ class Tree:
             f.write(target_file)
 
     def get_md_file_link(self, node: Node):
-        return "[{}]({})".format(os.path.basename(node.abs_path), os.path.relpath(node.abs_path, self._root_path))
+        return "[{}]({})".format(os.path.basename(node.abs_path), os.path.relpath(node.abs_path, self._root_path).replace("\\","/"))
