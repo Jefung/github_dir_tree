@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# coding: utf-8
 
 import glob
 import os
@@ -227,7 +228,22 @@ class Tree:
         else:
             target_file = target_file.replace(
                 target_file[target_start:target_end], source_file)
-        print(target_file)
+        # target_file = target_file.encode(encoding='utf-8')
+
+        # import sys
+#         # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='gb18030')
+#         # import codecs
+        # sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+        # sys.stderr = codecs.getwriter('utf8')(sys.stderr)
+        # print(u"{}".format(target_file.encode(encoding='UTF-8')))
+        # print(type(target_file))
+        # print(type(target_file.encode('utf-8').decode("gbk")))
+        # print(target_file)
+
+        import safeprint
+        safeprint.print(target_file)
+
+        # Add an environment variable named PYTHONIOENCODING  [UTF-8] to your environment settings
         with open(target_update_file, 'w', encoding="utf-8") as f:
             f.write(target_file)
 
