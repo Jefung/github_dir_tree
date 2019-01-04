@@ -19,17 +19,34 @@ if __name__ == '__main__':
 
     # init options
     opt = OptDict()
-    opt['c', 'comment'] = (True, "   -c --comment   search all files special comment and add it to tree")
+    opt['c', 'comment'] = (
+        True,
+        "   -c --comment   search all files special comment and add it to tree"
+    )
     opt['l', 'level'] = (
-        0, "   -l --level   the distance between root and dir is level, only distance less than level will show")
-    opt['generate-conf'] = (True, "   --generate-conf  generate .github_dir_tree file if it not exists")
-    opt['update-readme'] = (False, "   --update-readme  auto update/add tree to README.md")
-    opt['filters'] = ([], "   --update-readme  auto update/add tree to README.md")
-    opt['start-line'] = ("# 目录结构", "   --start_line='str'  the first line that replace in readme")
-    opt['end-line'] = ("---", "   --end_line='str'  the end line that replace in readme")
-    opt['comment-match'] = ("// comment: ", "   --end_line='// comment: '  line in file whose prefix string is this will match")
-    opt['max-line-len'] = (120, "   --max-line-len=120  the max line nums in readme.md")
-    opt['dir-description'] = (".dir_desc", "   --max-line-len=120  the max line nums in readme.md")
+        0,
+        "   -l --level   the distance between root and dir is level, only distance less than level will show"
+    )
+    opt['generate-conf'] = (
+        True,
+        "   --generate-conf  generate .github_dir_tree file if it not exists")
+    opt['update-readme'] = (
+        False, "   --update-readme  auto update/add tree to README.md")
+    opt['filters'] = ([],
+                      "   --update-readme  auto update/add tree to README.md")
+    opt['start-line'] = (
+        "# 目录结构",
+        "   --start_line='str'  the first line that replace in readme")
+    opt['end-line'] = (
+        "---", "   --end_line='str'  the end line that replace in readme")
+    opt['comment-match'] = (
+        "// comment: ",
+        "   --end_line='// comment: '  line in file whose prefix string is this will match"
+    )
+    opt['max-line-len'] = (
+        120, "   --max-line-len=120  the max line nums in readme.md")
+    opt['dir-description'] = (
+        ".dir_desc", "   --max-line-len=120  the max line nums in readme.md")
     conf_file_opt = opt
     target_dir = get_option(sys.argv[1:], opt)
 
@@ -38,7 +55,8 @@ if __name__ == '__main__':
         print(Usage_description)
         exit(1)
     else:
-        if not os.path.exists(target_dir[0]) or not os.path.isdir(target_dir[0]):
+        if not os.path.exists(target_dir[0]) or not os.path.isdir(
+                target_dir[0]):
             print("Project root not exists: " + target_dir[0])
             exit(2)
         else:
@@ -48,13 +66,14 @@ if __name__ == '__main__':
     conf_file_abs = os.path.join(project_root, conf_file)
     if not os.path.exists(conf_file_abs):
         if not os.path.exists(conf_temp):
-            print("Error: {} not exists, please re-download script".format(conf_temp))
+            print("Error: {} not exists, please re-download script".format(
+                conf_temp))
         shutil.copy(conf_temp, conf_file_abs)
 
     # load configure
     config = configparser.ConfigParser(allow_no_value=True)
     config.optionxform = str
-    config.read(conf_file_abs,encoding="utf-8")
+    config.read(conf_file_abs, encoding="utf-8")
 
     # add configure into default options
     file_filters = []
@@ -82,6 +101,3 @@ if __name__ == '__main__':
     # print()
     tree.print_tree()
     # todo : use regex to match comment
-
-
-

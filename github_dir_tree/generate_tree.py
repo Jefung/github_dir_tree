@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
+import glob
 import os
 import tempfile
 
 dir_path = r"../tests/dir_tree"
-import glob
 
 project_root = "../tests/dir_tree"
 # project_root = os.path.abspath(project_root)
@@ -30,7 +30,8 @@ class Tree:
     def __init__(self, path: str = ""):
         self._root_path = os.path.abspath(path)
         self.comment_match_key = "// comment: "
-        self._tmp_file = os.path.join(tempfile.gettempdir(), ".github_dir_tree_tmp")
+        self._tmp_file = os.path.join(tempfile.gettempdir(),
+                                      ".github_dir_tree_tmp")
         self.start_line = "# 目录结构"
         self.end_line = "---"
         self.max_line_len = 120
@@ -59,8 +60,10 @@ class Tree:
             if f.startswith("/"):
                 handled_filters.append(os.path.join(self._root_path, f[1:]))
             else:
-                handled_filters.append(os.path.join(self._root_path, "**/" + f))
-        handled_filters.append(os.path.join(self._root_path, "**/" + self.dir_desc))
+                handled_filters.append(
+                    os.path.join(self._root_path, "**/" + f))
+        handled_filters.append(
+            os.path.join(self._root_path, "**/" + self.dir_desc))
         ignore_files = []
         for match_path in handled_filters:
             ignore_files.extend(glob.glob(match_path, recursive=True))
@@ -73,8 +76,11 @@ class Tree:
         if len(file_list) == 0:
             return []
         # only_files = (file for file in file_list if os.path.isfile(os.path.join(path, file)))
-        file_list = [file for file in file_list if
-                     os.path.normpath(os.path.abspath(os.path.join(dir_path, file))) not in self._file_filter]
+        file_list = [
+            file for file in file_list
+            if os.path.normpath(os.path.abspath(os.path.join(dir_path, file)))
+            not in self._file_filter
+        ]
         only_dir = True
         final_file = ""
         for f in file_list:
@@ -97,9 +103,14 @@ class Tree:
                 node.is_dir = True
                 dirs.append(node)
 
-                dir_desc_file = os.path.join(os.path.join(dir_path, f), self.dir_desc)
-                if os.path.exists(dir_desc_file) and os.path.isfile(dir_desc_file):
-                    with open(dir_desc_file.encode("utf-8"), encoding="utf8", errors="ignore") as f_content:
+                dir_desc_file = os.path.join(
+                    os.path.join(dir_path, f), self.dir_desc)
+                if os.path.exists(dir_desc_file) and os.path.isfile(
+                        dir_desc_file):
+                    with open(
+                            dir_desc_file.encode("utf-8"),
+                            encoding="utf8",
+                            errors="ignore") as f_content:
                         for line in f_content:
                             line = line[0:-1] if line[-1] == '\n' else line
                             node.comments.append(line)
@@ -111,12 +122,15 @@ class Tree:
                 node = self.Node()
                 node.level = level
                 node.abs_path = abs_path
-                with open(abs_path.encode("utf-8"), encoding="utf8", errors="ignore") as f_content:
+                with open(
+                        abs_path.encode("utf-8"), encoding="utf8",
+                        errors="ignore") as f_content:
                     for num, line in enumerate(f_content, 1):
                         if self.comment_match_key in line:
                             if line[-1] == '\n':
                                 line = line[:-1]
-                            node.comments.append(line[len(self.comment_match_key):])
+                            node.comments.append(
+                                line[len(self.comment_match_key):])
                 if not only_dir and final_file == node.abs_path:
                     node.is_end = True
                 files.append(node)
@@ -144,7 +158,8 @@ class Tree:
             else:
                 print("* " + self.get_md_file_link(file_node), end="", file=fs)
 
-            max_line_words = 100 - len(need_line) * 5 - file_node.basename_len()
+            max_line_words = 100 - len(need_line) * 5 - file_node.basename_len(
+            )
             first_line = True
             if len(file_node.comments):
                 comments = file_node.comments.copy()
@@ -156,7 +171,8 @@ class Tree:
                         line_content = comments[0]
                         del comments[0]
                     if first_line:
-                        print("&nbsp;:&nbsp;" + line_content + "<br/>", file=fs)
+                        print(
+                            "&nbsp;:&nbsp;" + line_content + "<br/>", file=fs)
                         first_line = False
                     else:
                         if file_node.is_end:
@@ -203,15 +219,19 @@ class Tree:
         except Exception as e:
             target_end = target_start = 0
 
-        source_file = "{}\n\n{}\n{}".format(self.start_line, source_file, self.end_line)
+        source_file = "{}\n\n{}\n{}".format(self.start_line, source_file,
+                                            self.end_line)
 
         if target_end == 0 and target_start == 0:
             target_file += '\n' + source_file
         else:
-            target_file = target_file.replace(target_file[target_start:target_end], source_file)
+            target_file = target_file.replace(
+                target_file[target_start:target_end], source_file)
         print(target_file)
         with open(target_update_file, 'w', encoding="utf-8") as f:
             f.write(target_file)
 
     def get_md_file_link(self, node: Node):
-        return "[{}]({})".format(os.path.basename(node.abs_path), os.path.relpath(node.abs_path, self._root_path).replace("\\","/"))
+        return "[{}]({})".format(
+            os.path.basename(node.abs_path),
+            os.path.relpath(node.abs_path, self._root_path).replace("\\", "/"))
