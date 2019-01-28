@@ -1,9 +1,3 @@
-[ignore-files]
-.git
-.gitignore
-.github_dir_tree
-.idea
-
 [common]
 level = 0
 generate-comment = True
@@ -12,4 +6,14 @@ start-line = # 目录结构
 end-line = ---
 comment-match = // comment:
 max-line-len = 120
-dir-description = .dir_desc
+dir-description = .dir_description
+
+[ignore-files]
+.git
+.gitignore
+.github_dir_tree
+.idea
+README.md
+__pycache__
+__init__.py
+.dir_description
