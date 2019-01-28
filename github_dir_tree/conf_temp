@@ -9,11 +9,8 @@ max-line-len = 120
 dir-description = .dir_description
 
 [ignore-files]
-.git
 .gitignore
 .github_dir_tree
-.idea
-README.md
-__pycache__
-__init__.py
 .dir_description
+README.md
+__init__.py

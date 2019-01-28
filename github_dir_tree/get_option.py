@@ -11,7 +11,6 @@ class OptDict(dict):
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
-        # self.update(*args, **kw)
 
     def __getitem__(self, key):
         if isinstance(key, tuple):

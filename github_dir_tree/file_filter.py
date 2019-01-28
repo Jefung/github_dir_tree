@@ -7,7 +7,8 @@ class FileFilter:
     _filter_files = None
     _project_root = None
 
-    def __init__(self, git_wild_match=None):
+    def __init__(self, project_root, git_wild_match=None):
+        self._project_root = project_root
         if git_wild_match:
             if isinstance(git_wild_match, str):
                 git_wild_match = git_wild_match.splitlines()
@@ -22,8 +23,8 @@ class FileFilter:
             lines = f.read().splitlines()
         self.git_wild_match = self.git_wild_match + lines
 
-    def set_project_root_dir(self, path):
-        self._project_root = path
+    # def set_project_root_dir(self, path):
+    #     self._project_root = path
 
     def get_filter_files(self) -> list:
         if self._project_root is None:
@@ -46,7 +47,6 @@ class FileFilter:
 
     def is_in_project(self, abs_path):
         return os.path.commonprefix([abs_path, self._project_root]) == self._project_root
-
 
 # filter = FileFilter([])
 # filter.set_project_root_dir(r'C:\Users\jefun\Desktop\py_repos\github_dir_tree')

@@ -35,7 +35,7 @@ class Tree:
         self.start_line = "# 目录结构"
         self.end_line = "---"
         self.max_line_len = 120
-        self.dir_desc = ".dir_desc"
+        self.dir_desc = ".dir_description"
         self.level = 0
         self._file_filter = None
 
@@ -52,29 +52,16 @@ class Tree:
 
     @property
     def file_filter(self):
+        if self._file_filter is None:
+            self.file_filter = []
         return self._file_filter
 
     @file_filter.setter
     def file_filter(self, filters: list):
         if self._file_filter is None:
-            self.filter = FileFilter(filters)
-            self.filter.set_project_root_dir(self._root_path)
+            self._file_filter = FileFilter(self._root_path, filters)
             if os.path.isfile(os.path.join(self._root_path, ".gitignore")):
-                self.filter.load_git_ignore_file(os.path.join(self._root_path, ".gitignore"))
-            self._file_filter = self.filter.get_filter_files()
-            # print(self._file_filter)
-        # pass
-        # handled_filters = []
-        # for f in filters:
-        #     if f.startswith("/"):
-        #         handled_filters.append(os.path.join(self._root_path, f[1:]))
-        #     else:
-        #         handled_filters.append(os.path.join(self._root_path, "**/" + f))
-        # handled_filters.append(os.path.join(self._root_path, "**/" + self.dir_desc))
-        # ignore_files = []
-        # for match_path in handled_filters:
-        #     ignore_files.extend(glob.glob(match_path, recursive=True))
-        # self._file_filter = [os.path.abspath(f) for f in ignore_files]
+                self._file_filter.load_git_ignore_file(os.path.join(self._root_path, ".gitignore"))
 
     def list_dir(self, dir_path, level=0) -> []:
         dirs = []
@@ -82,7 +69,9 @@ class Tree:
         file_list = os.listdir(dir_path)
         if len(file_list) == 0:
             return []
-        file_list = [file for file in file_list if not self.filter.is_match(os.path.abspath(os.path.join(dir_path, file)))]
+
+        file_list = [file for file in file_list if
+                     not self.file_filter.is_match(os.path.abspath(os.path.join(dir_path, file)))]
         only_dir = True
         final_file = ""
         for f in file_list:
