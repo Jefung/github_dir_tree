@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+# coding: utf-8
 
 import os
 import tempfile
+import safeprint
 from .file_filter import FileFilter
 
 
@@ -67,6 +69,7 @@ class Tree:
         file_list = [
             file for file in file_list if not self.file_filter.is_match(
                 os.path.abspath(os.path.join(dir_path, file)))
+
         ]
         only_dir = True
         final_file = ""
@@ -197,8 +200,6 @@ class Tree:
         with open(target_update_file, 'r', encoding="utf-8") as f:
             target_file = f.read()
 
-        target_start = 0
-        target_end = 0
         try:
             target_start = target_file.index(self.start_line)
             target_end = target_file.index(self.end_line, target_start)
@@ -214,7 +215,9 @@ class Tree:
         else:
             target_file = target_file.replace(
                 target_file[target_start:target_end], source_file)
-        print(target_file)
+
+        safeprint.print(target_file)
+
         with open(target_update_file, 'w', encoding="utf-8") as f:
             f.write(target_file)
 

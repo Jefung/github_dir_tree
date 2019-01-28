@@ -19,12 +19,9 @@ class FileFilter:
             self.git_wild_match = []
 
     def load_git_ignore_file(self, path):
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf8') as f:
             lines = f.read().splitlines()
         self.git_wild_match = self.git_wild_match + lines
-
-    # def set_project_root_dir(self, path):
-    #     self._project_root = path
 
     def get_filter_files(self) -> list:
         if self._project_root is None:
@@ -51,7 +48,6 @@ class FileFilter:
     def is_in_project(self, abs_path):
         return os.path.commonprefix([abs_path,
                                      self._project_root]) == self._project_root
-
 
 # filter = FileFilter([])
 # filter.set_project_root_dir(r'C:\Users\jefun\Desktop\py_repos\github_dir_tree')
