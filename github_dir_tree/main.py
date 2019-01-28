@@ -11,7 +11,7 @@ from github_dir_tree.generate_tree import Tree
 if __name__ == '__main__':
 
     # init env
-    Usage_description = "Usage: tree.py [option] project_root"
+    Usage_description = "Usage: main.py [option] project_root"
     project_root = ""
     script_dir = os.path.dirname(os.path.realpath(__file__))
     conf_temp = os.path.join(script_dir, "conf_temp")

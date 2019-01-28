@@ -1,6 +1,22 @@
-venv
+# comment: .gitignore模板
+# JetBrain系列ide
 .idea
-tests
+cmake-build-debug
 
-*.pyc
+# 构建以及部署
+dist
+build
+eggs/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+venv
 __pycache__
+
+# vim缓存文件
+*.swp
+*.swo
+
+# C extensions
+*.so
