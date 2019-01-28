@@ -16,7 +16,7 @@ class OptDict(dict):
         if isinstance(key, tuple):
             tuple_key = key
         else:
-            tuple_key = (key,)
+            tuple_key = (key, )
         for exists_tuple_key in self.keys():
             is_exists = True
             for to_get_key in tuple_key:
@@ -33,7 +33,7 @@ class OptDict(dict):
         if isinstance(key, tuple):
             to_insert_tuple_key = key
         else:
-            to_insert_tuple_key = (key,)
+            to_insert_tuple_key = (key, )
 
         # value -> (expected value, usage_description)
         usage_description = ""
