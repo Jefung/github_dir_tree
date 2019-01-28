@@ -9,6 +9,8 @@ max-line-len = 120
 dir-description = .dir_description
 
 [ignore-files]
+# ignore文件语法同.gitignore语法一样
+.git
 .gitignore
 .github_dir_tree
 .dir_description
