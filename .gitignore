@@ -1,8 +1,20 @@
 # comment: .gitignore模板
+##### 项目特有 #####
+
+
+#### 开发环境 ####
 # JetBrain系列ide
 .idea
 cmake-build-debug
+# vim缓存文件
+*.swp
+*.swo
+# github_dir_tree文件
+.dir_description
 
+#### python ####
+# py部署脚本
+pypi_upload.sh
 # 构建以及部署
 dist
 build
@@ -14,9 +26,8 @@ eggs/
 venv
 __pycache__
 
-# vim缓存文件
-*.swp
-*.swo
 
+
+#### cpp ####
 # C extensions
 *.so
