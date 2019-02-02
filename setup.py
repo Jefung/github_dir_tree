@@ -75,6 +75,7 @@ setup(
     description="github仓库目录树生成",
 
     long_description=readme(),
+    long_description_content_type='text/markdown',
     author="Jefung",
     author_email="865424525@qq.com",
     license="MIT",
