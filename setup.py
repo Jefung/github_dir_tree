@@ -20,9 +20,9 @@ VERSION = "1.0.9"
 
 # 流程:
 # 1. 修改VENSION: VERSION = "1.0.9"
-# 2. git提交: git_hooks add setup.py && git_hooks commit -m "upload pypi" && git_hooks push
-# 3. 增加tag: git_hooks tag -a [版本号] -m "说明文字"
-# 4. 提交tag: git_hooks push --tag   // origin可修改为你的其它分支
+# 2. git提交: git add setup.py && git_hooks commit -m "upload pypi" && git_hooks push
+# 3. 增加tag: git tag -a [版本号] -m "说明文字"
+# 4. 提交tag: git push --tag   // origin可修改为你的其它分支
 
 
 def get_git_latest_tag():
