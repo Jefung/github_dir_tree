@@ -84,6 +84,10 @@ setup(
     ],
     keywords='github dir_tree python',
     packages=find_packages(exclude=['tests']),
+    package_data={
+        'github_dir_tree': ['*']
+    },
+
     install_requires=[
         'pathspec',
     ],
